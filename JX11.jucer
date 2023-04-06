@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="hjalPS" name="JX11" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="Intuitive Harmony"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              pluginCode="JX11">
+  <MAINGROUP id="zYVi6g" name="JX11">
+    <GROUP id="{A8F97E43-CE2D-E768-5C0B-A4B7B553DAC4}" name="Source">
+      <FILE id="HpZ2AP" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="E4vBv7" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="AnoUyI" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="ywCbJ1" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-Wall -Wextra">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="JX11"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="JX11"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_core" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_events" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../JUCE7/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../JUCE7/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>
