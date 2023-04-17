@@ -13,6 +13,7 @@
 //==============================================================================
 /**
 */
+// NOTE Our processor is an extension of of the juce::AudioProcessor class 
 class JX11AudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
@@ -57,6 +58,11 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
+    // ~68 adding three methods~
+    void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
+    void render(juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset);
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JX11AudioProcessor)
 };
