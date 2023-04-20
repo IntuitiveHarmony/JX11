@@ -146,7 +146,9 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     // this code if your algorithm always overwrites all the output channels.
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
+    // ~~ 70
+    splitBufferByEvents(buffer, midiMessages);
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -159,6 +161,18 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
 
         // ..do something to the data...
     }
+}
+
+// ~~ This is where we handle the MIDI input for our plugin ~~
+void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
+{
+    char s[16];
+    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);    
+    DBG(s);
+}
+void JX11AudioProcessor::render(
+juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
+{
 }
 
 // ~68 define splitBufferByEvents~
@@ -189,6 +203,8 @@ void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &buffer, j
     }
     midiMessages.clear();
 }
+
+
 
 //==============================================================================
 bool JX11AudioProcessor::hasEditor() const
