@@ -9,6 +9,7 @@
 */
 
 #include "Synth.h"
+#include "Utils.h"
 
 Synth::Synth()
 {
@@ -52,6 +53,9 @@ void Synth::render(float **outputBuffers, int sampleCount)
             outputBufferRight[sample] = output;
         }
     }
+    
+//    protectYourEars(outputBufferLeft, sampleCount);
+//    protectYourEars(outputBufferRight, sampleCount);
 }
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
