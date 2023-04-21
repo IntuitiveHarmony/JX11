@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "Voice.h"
+#include "NoiseGenerator.h"
 
 // we made a mirror of JX11AudioProcessor in a way
 // it has similar methods to: reset state, render the current block and handle MIDI
@@ -31,6 +32,7 @@ public:
 private:
     float sampleRate;
     Voice voice;
+    NoiseGenerator noiseGen;
     
     void noteOn(int note, int velocity);
     void noteOff(int note);

@@ -29,14 +29,32 @@ void Synth::deallocateResources()
 void Synth::reset()
 {
     voice.reset();
+    noiseGen.reset();
 }
 
+// This is where the sound is made 
 void Synth::render(float **outputBuffers, int sampleCount)
 {
+    float* outputBufferLeft = outputBuffers[0];
+    float* outputBufferRight = outputBuffers[1];
     
+    // 1
+    for (int sample = 0; sample < sampleCount; ++sample) {
+        float noise = noiseGen.nextValue();
+        
+        float output = 0.0f;
+        if (voice.note > 0) {
+            output = noise * (voice.velocity / 127.0f) * 0.5f;
+        }
+        
+        outputBufferLeft[sample] = output;
+        if (outputBufferRight != nullptr) {
+            outputBufferRight[sample] = output;
+        }
+    }
 }
 
-void Synth::midiMesage(uint8_t data0, uint8_t data1, uint8_t data2)
+void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 {
     switch (data0 & 0xF0) {
         // note off, call the note off method
