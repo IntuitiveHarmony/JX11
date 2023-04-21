@@ -95,12 +95,14 @@ void JX11AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    synth.allocateResources(sampleRate, samplesPerBlock);
 }
 
 void JX11AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
+    synth.deallocateResources();
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
