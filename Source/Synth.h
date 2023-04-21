@@ -26,9 +26,13 @@ public:
     void deallocateResources();
     void reset();
     void render(float** outputBuffers, int sampleCount);
-    void midiMesage(uint8_t data0, uint8_t data1, uint8_t data2);
+    void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2);
 
 private:
     float sampleRate;
     Voice voice;
+    
+    void noteOn(int note, int velocity);
+    void noteOff(int note);
+    
 };

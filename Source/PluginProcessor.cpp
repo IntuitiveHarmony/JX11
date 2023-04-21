@@ -96,6 +96,7 @@ void JX11AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     synth.allocateResources(sampleRate, samplesPerBlock);
+    reset();
 }
 
 void JX11AudioProcessor::releaseResources()
@@ -168,9 +169,12 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
 // ~~ This is where we handle the MIDI input for our plugin ~~
 void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    char s[16];
-    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);    
-    DBG(s);
+    // pass midi messsage to the synth class
+    synth.midiMessage(data0, data1, data2);
+    // This will print the midi messages to the console
+    // char s[16];
+    // snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
+    // DBG(s);
 }
 void JX11AudioProcessor::render(
 juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
@@ -233,9 +237,15 @@ void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
     // whose contents will have been created by the getStateInformation() call.
 }
 
+void JX11AudioProcessor::reset()
+{
+    synth.reset();
+}
+
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new JX11AudioProcessor();
 }
+
