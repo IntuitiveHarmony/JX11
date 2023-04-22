@@ -173,13 +173,13 @@ void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
     synth.midiMessage(data0, data1, data2);
     
     // This will print the midi messages to the console
-     char s[16];
-     snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
-     DBG(s);
+    char s[16];
+    snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
+    DBG(s);
     // print the raw values of data0, data1, and data2
-    printf("data0 = %u, data1 = %u, data2 = %u\n", data0, data1, data2);
+    // printf("data0 = %u, data1 = %u, data2 = %u\n", data0, data1, data2);
     // or use the DBG() macro
-    DBG("data0 = " << (int)data0 << ", data1 = " << (int)data1 << ", data2 = " << (int)data2);
+    DBG("data0 = " << data0 << ", data1 = " << data1 << ", data2 = " << data2);
 }
 void JX11AudioProcessor::render(
 juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)

@@ -16,23 +16,21 @@ class Oscillator
 {
 public:
     float amplitude;
-    float freq;
-    float sampleRate;
-    float phaseOffset;
-    int sampleIndex;
+    float inc;
+    float phase;
     
     void reset()
     {
-        sampleIndex = 0;
+        phase = 0.0f;
     }
     
     float nextSample()
     {
-        // This is the formula for a sine wave  =>  amplitude * sin(2π * time * frequency / sampleRate + phase)
-        // with the sampleIndex put in for time variable.
-        float output = amplitude * std::sin(TWO_PI * sampleIndex * freq / sampleRate + phaseOffset);
+        phase += inc;
+        if (phase >= 1.0f) {
+            phase -= 1.0f;
+        }
         
-        sampleIndex += 1;
-        return output;
+        return amplitude * std::sin(TWO_PI * phase);
     }
 };
