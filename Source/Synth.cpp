@@ -33,7 +33,7 @@ void Synth::reset()
     noiseGen.reset();
 }
 
-// This is where the sound is made 
+// This is where the sound is output
 void Synth::render(float **outputBuffers, int sampleCount)
 {
     float* outputBufferLeft = outputBuffers[0];
