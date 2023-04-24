@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <cmath>
+
 const float PI_OVER_4 = 0.7853981633974483f;
 const float PI = 3.1415926535897932f;
 const float TWO_PI = 6.2831853071795864f;
@@ -26,6 +28,7 @@ public:
         phase = 0.0f;
         sin1 = 0.0f;
         dsin = 0.0f;
+        dc = 0.0f;
     }
     
     float nextSample()
@@ -40,9 +43,11 @@ public:
             float halfPeriod = period / 2.0f; // Find where the midpoint will be between the peak that was just finished and the next one.
             phaseMax = std::floor(0.5 + halfPeriod) - 0.5f; // The phaseMax variable holds the position of the midpoint between the two impulse peaks.  Floor reduces aliasing
             
+            dc = 0.5f * amplitude / phaseMax;
+            phaseMax *= PI;
+            
             inc = phaseMax / halfPeriod;
             phase = -phase;
-            
             
             sin0 = amplitude * std::sin(phase);
             sin1 = amplitude * std::sin(phase - inc);
@@ -56,6 +61,7 @@ public:
         } else { // The current sample is somewhere between the previous peak and the next. This is where the oscillator spends most of its time.
             if (phase > phaseMax) { // Phase counter goes past the half-way point, set phase to the maximum and invert the increment inc, so that now the oscillator will begin outputting the sinc function backwards
                 phase = phaseMax + phaseMax - phase;
+                inc = -inc;
             }
             float sinp = dsin * sin0 - sin1;
             sin1 = sin0;
@@ -63,8 +69,7 @@ public:
             
             output = sinp / phase;
         }
-        return output;
-        
+        return output - dc;
     }
     
     
@@ -72,7 +77,10 @@ private:
     float inc;
     float phase;
     float phaseMax;
+    
     float sin0;
     float sin1;
     float dsin;
+    
+    float dc;
 };

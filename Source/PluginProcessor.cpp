@@ -106,6 +106,11 @@ void JX11AudioProcessor::releaseResources()
     synth.deallocateResources();
 }
 
+void JX11AudioProcessor::reset()
+{
+    synth.reset();
+}
+
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool JX11AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
@@ -249,12 +254,16 @@ void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
     // whose contents will have been created by the getStateInformation() call.
 }
 
-void JX11AudioProcessor::reset()
-{
-    synth.reset();
-}
 
 //==============================================================================
+
+juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    return layout;
+}
+
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
