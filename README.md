@@ -11,8 +11,8 @@ I recently came across this book, [*Code Your Own Synth Plug-Ins With C++ and JU
 
 In order to gain some fundamental C++ skills i enrolled in Coursera's C++ specilization, which I just finished recently.  Building the JX11 seemed like the next logical step in my journey into sound.  Before I purchased the book I went to the finished source [code](https://github.com/hollance/synth-plugin-book#code-your-own-synth-plug-ins-with-c-and-juce "Synth-Plugin-Book Repo") and cloned it to my local machine.  I wanted to see if I could get this project running on my computer.  When I went to compile I immedieletly ran into errors.  Something about an ambigous reference I think...  At first I thought it may have been that I was using JUCE 6.1.6 so I updated to version 7.0.5 as the book says it goes off version 7.  The issue still presisted so after a bit of googling I finally cleared up an issue with the namespace, and the project was able to compile on my computer.  Once I heard the JX11 playing through my speakers I just had to build it.  Not because of it's sound, no, (although it does sound pretty good).  It was the fact that I was able to perform some C++ debugging on my own. This made me feel like I was ready to go ⚡
 
-## `int8_t`
+<!-- ## `int8_t`
 
-In the 
+In the `handleMIDI` method we are pasing the `int8_t` data type  -->
 
 
