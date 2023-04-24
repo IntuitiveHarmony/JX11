@@ -265,19 +265,27 @@ juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createPa
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     
     // Helpers used to construct the APVTS for the parameters:
-    layout.add(std::make_unique<juce::AudioParameterChoice>(
+    layout.add(std::make_unique<juce::AudioParameterChoice>( // Parameter Choice
                                                             ParameterID::polyMode, // Parameter Identifier
                                                             "Polyphony", // Human readable name for the DAW
                                                             juce::StringArray { "Mono", "Poly" }, // Choices for the parameter
                                                             1 // Index of default choice
                                                             ));
-    layout.add(std::make_unique<juce::AudioParameterFloat>(
+    layout.add(std::make_unique<juce::AudioParameterFloat>( // Parameter Float
                                                             ParameterID::oscTune,
                                                             "Osc Tune",
                                                             juce::NormalisableRange<float>(-24.0, 24.0f, 1.0f),
                                                             -12.0f,
                                                             juce::AudioParameterFloatAttributes().withLabel("semi") // label for the parameter
                                                             ));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::oscFine,
+                                                            "Osc Fine",
+                                                            juce::NormalisableRange<float>(-50.0f, 50.0f, 0.1f, 0.3, true), // .3 is a skew that makes the center of the slider "wider" giving uer more definition closer to 0
+                                                            0.0f,
+                                                            juce::AudioParameterFloatAttributes().withLabel("cent")
+                                                            ));
+    
     
     return layout;
 }
