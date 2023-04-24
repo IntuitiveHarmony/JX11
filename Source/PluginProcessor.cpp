@@ -271,6 +271,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createPa
                                                             juce::StringArray { "Mono", "Poly" }, // Choices for the parameter
                                                             1 // Index of default choice
                                                             ));
+    
     layout.add(std::make_unique<juce::AudioParameterFloat>( // Parameter Float
                                                             ParameterID::oscTune,
                                                             "Osc Tune",
@@ -278,6 +279,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createPa
                                                             -12.0f,
                                                             juce::AudioParameterFloatAttributes().withLabel("semi") // label for the parameter
                                                             ));
+    
     layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::oscFine,
                                                             "Osc Fine",
@@ -286,6 +288,23 @@ juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createPa
                                                             juce::AudioParameterFloatAttributes().withLabel("cent")
                                                             ));
     
+    // This allows us to display something more custom in the UI
+    auto oscMixStringFromValue = [](float value, int)
+    {
+        char s[16] = { 0 };
+        snprintf(s, 16, "%4.0f:%2.0f", 100.0 - 0.5f * value, 0.5f * value);
+        return juce::String(s);
+    };
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                           ParameterID::oscMix,
+                                                           "Osc Mix",
+                                                           juce::NormalisableRange<float>(0.0f, 100.0f), // no 'step' value
+                                                           0.0f,
+                                                           juce::AudioParameterFloatAttributes()
+                                                            .withLabel("%")
+                                                            .withStringFromValueFunction(oscMixStringFromValue) // custom output to UI
+                                                           ));
     
     return layout;
 }
