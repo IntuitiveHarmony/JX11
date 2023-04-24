@@ -237,7 +237,9 @@ bool JX11AudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* JX11AudioProcessor::createEditor()
 {
-    return new JX11AudioProcessorEditor (*this);
+    auto editor = new juce::GenericAudioProcessorEditor(*this);
+    editor->setSize(500, 1050);
+    return editor;
 }
 
 //==============================================================================
@@ -257,9 +259,25 @@ void JX11AudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 
 //==============================================================================
 
+// This will instansiate and define the parameters (user choices) layout for the synth
 juce::AudioProcessorValueTreeState::ParameterLayout JX11AudioProcessor::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    
+    // Helpers used to construct the APVTS for the parameters:
+    layout.add(std::make_unique<juce::AudioParameterChoice>(
+                                                            ParameterID::polyMode, // Parameter Identifier
+                                                            "Polyphony", // Human readable name for the DAW
+                                                            juce::StringArray { "Mono", "Poly" }, // Choices for the parameter
+                                                            1 // Index of default choice
+                                                            ));
+    layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::oscTune,
+                                                            "Osc Tune",
+                                                            juce::NormalisableRange<float>(-24.0, 24.0f, 1.0f),
+                                                            -12.0f,
+                                                            juce::AudioParameterFloatAttributes().withLabel("semi") // label for the parameter
+                                                            ));
     
     return layout;
 }
