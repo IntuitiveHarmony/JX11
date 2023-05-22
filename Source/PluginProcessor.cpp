@@ -145,7 +145,13 @@ void JX11AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::M
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
+    
+    // Read noise parameters
+    const juce::String& paramID = ParameterID::noise.getParamID();
+    float noiseMix = apvts.getRawParameterValue(paramID)->load() / 100.0f;
+    noiseMix *= noiseMix;
+    synth.noiseMix = noiseMix * 0.06f;
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -186,6 +192,7 @@ void JX11AudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
     // or use the DBG() macro
     DBG("data0 = " << data0 << ", data1 = " << data1 << ", data2 = " << data2);
 }
+
 void JX11AudioProcessor::render(
 juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
 {
@@ -201,27 +208,37 @@ juce::AudioBuffer<float>& buffer, int sampleCount, int bufferOffset)
 // ~68 define splitBufferByEvents~
 void JX11AudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
-    int bufferOffset = 0;
     
-    for (const auto metadata : midiMessages) {
+    int bufferOffset = 0; // Initialize a variable to keep track of the current position in the audio buffer
+    
+    for (const auto metadata : midiMessages) { // Iterate over each MIDI event in the midiMessages buffer
         // render the audio that happens before this event (if any)
+        // Calculate the number of audio samples between the current MIDI event
+        // and the previous one (or the beginning of the buffer, if this is the first event)
         int samplesThisSegment = metadata.samplePosition - bufferOffset;
-        if (samplesThisSegment > 0) {
+        if (samplesThisSegment > 0) { // If there are audio samples between the previous MIDI event and the current one
+            // Call the render() function to process the audio samples in this segment
             render(buffer, samplesThisSegment, bufferOffset);
+            // Update the bufferOffset variable to reflect the current position in the audio buffer
             bufferOffset += samplesThisSegment;
         }
         
-        // handle the event. Ignore MIDI messages suche as sysex
-        if (metadata.numBytes <= 3) {
+        // handle the event. Ignore MIDI messages such as sysex
+        // If this is a valid MIDI message (i.e., its size is 1, 2, or 3 bytes)
+        if (metadata.numBytes <= 3) { // If this is a valid MIDI message (i.e., its size is 1, 2, or 3 bytes)
+            // Extract the first data byte (if present) from the MIDI message
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
+            // Extract the second data byte (if present) from the MIDI message
             uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
+            // Call the handleMIDI() function to process the MIDI event
             handleMIDI(metadata.data[0], data1, data2);
         }
     }
     // Render the audio after the last MIDI event. If there were no
     // MIDI events at all, this renders the entire buffer.
+    // Calculate the number of audio samples remaining in the buffer after the last MIDI event
     int samplesLastSegment = buffer.getNumSamples() - bufferOffset;
-    if (samplesLastSegment > 0) {
+    if (samplesLastSegment > 0) { // If there are any remaining audio samples
         render(buffer, samplesLastSegment, bufferOffset);
     }
     midiMessages.clear();

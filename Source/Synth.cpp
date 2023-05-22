@@ -41,11 +41,11 @@ void Synth::render(float **outputBuffers, int sampleCount)
     
     // 1
     for (int sample = 0; sample < sampleCount; ++sample) {
-        float noise = noiseGen.nextValue();
+        float noise = noiseGen.nextValue() * noiseMix;
         
         float output = 0.0f;
         if (voice.note > 0) {
-            output = voice.render();
+            output = voice.render() + noise;
         }
         
         outputBufferLeft[sample] = output;
@@ -60,7 +60,7 @@ void Synth::render(float **outputBuffers, int sampleCount)
 
 void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
 {
-    switch (data0 & 0xF0) {
+    switch (data0 & 0xF0) { // Bitwise operator is used to return the first hex byte of data0
         // note off, call the note off method
         case 0x80:
             noteOff(data1 & 0x7F);
@@ -71,6 +71,7 @@ void Synth::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2)
             uint8_t note = data1 & 0x7F;
             uint8_t velo = data2 & 0x7F;
             if (velo > 0) {
+                DBG("\nNote = " << note << " data1 = " << data1);
                 noteOn(note, velo);
             } else {
                 noteOff(note);
